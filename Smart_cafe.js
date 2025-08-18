@@ -144,7 +144,7 @@ do {
                 }
                 else {
                     console.log("Newpassword and Old password must be different..!");
-                    document.write("Newpassword and Old password must be different..!<br>")
+                    document.write("Newpassword and Old password must be different..!")
                 }
             }
             else {
@@ -190,5 +190,6 @@ do {
         console.log("Invalid choice..!");
         document.write("Invalid choice..!<br>");
     }
+
 
 } while (choice != 0);
