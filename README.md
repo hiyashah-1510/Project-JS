@@ -1,4 +1,5 @@
 # Smart Cafe Billing System
+This JavaScript program is a menu-driven Cafe Management System that allows customers to place orders for items like coffee, tea, sandwiches, and pastries while keeping track of the total bill, highest and lowest priced items, and the number of items sold. It provides features to view the detailed bill with GST, apply discounts based on the total amount, change the cafe password with proper validation rules, and generate a sales report showing total items, highest and lowest item prices, and the average price. The program runs in a loop until the user exits, making it an interactive way to manage orders, billing, and reporting for a cafe.
 # Output
 <img width="491" height="716" alt="image" src="https://github.com/user-attachments/assets/40085552-b84a-4c03-9e4b-c33c7823f728" />
 <img width="627" height="713" alt="image" src="https://github.com/user-attachments/assets/c1e82fb3-4069-4e2b-a782-5913735a016c" />
