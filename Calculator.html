@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(313deg,rgba(42, 123, 155, 1) 0%, rgb(37, 68, 172) 90%);
+        }
+        .calculator{
+            padding: 20px;
+            border: #beecfe 1.5px solid;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(50px);
+            border-radius: 16px;
+            box-shadow: 0px 3px 40px rgba(0, 41, 57, 1);
+        }
+
+        input{
+            width: 330px;
+            border: #beecfe 1.5px solid ;
+            padding: 15px;
+            background: transparent;
+            font-size: 40px;
+            text-align: right;
+            box-shadow: 0px 2px 15px rgb(111, 214, 255);
+            margin: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+        input::placeholder{
+            color: rgb(255, 255, 255);
+        }
+
+        button{
+            width: 65px;
+            height: 65px;
+            border: none;
+            margin: 10px;
+            border-radius: 15px;
+            font-size: 20px;
+            background-color: #beecfe;
+            cursor: pointer;
+        }
+
+        .equal{
+            background: #97dcf8;
+        }
+
+        .btn{
+            background: #79d8fe;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" placeholder="0" class="form" id="display" readonly>
+        <div>
+            <button onclick="clearAll()">AC</button>
+            <button onclick="deleteLast()">DEL</button>
+            <button onclick="setOperator('%')">%</button>
+            <button class="btn" onclick="setOperator('/')">/</button>
+        </div>
+        <div>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="btn" onclick="setOperator('x')">x</button>
+        </div>
+        <div>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="btn" onclick="setOperator('-')">-</button>
+        </div>
+        <div>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="btn" onclick="setOperator('+')">+</button>
+        </div>
+        <div>
+            <button class="btn" onclick="appendValue('00')">00</button>
+            <button class="btn" onclick="appendValue('0')">0</button>
+            <button class="btn" onclick="appendValue('.')">.</button>
+            <button class="equal" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script>
+    let display = document.getElementById("display");
+    let expression = "";
+
+    function appendValue(value) {
+        if (/[0-9.]/.test(value)) {
+            let parts = expression.split(/[\+\-\x\/%]/);
+            let lastNumber = parts[parts.length - 1];
+            if (value === "." && lastNumber.includes(".")) return;
+
+            expression += value;
+            display.value = expression;
+        }
+    }
+
+    function setOperator(op) {
+        if (expression === "") return;
+
+        let lastChar = expression.trim().slice(-1);
+        if ("+-x/%".includes(lastChar)) return;
+
+        expression += " " + op + " ";
+        display.value = expression;
+    }
+
+    function deleteLast() {
+        expression = expression.trim();
+        if (/[+\-x\/%]$/.test(expression)) {
+            expression = expression.slice(0, -2);
+        } else {
+            expression = expression.slice(0, -1);
+        }
+        display.value = expression;
+    }
+
+    function clearAll() {
+        expression = "";
+        display.value = "";
+    }
+
+    function calculateResult() {
+        let exp = expression.replace(/x/g, "*").split(" ");
+        exp = exp.filter(token => token !== "");
+
+        for (let i = 0; i < exp.length; i++) {
+            if (exp[i] === "*" || exp[i] === "/" || exp[i] === "%") {
+                let left = parseFloat(exp[i - 1]);
+                let right = parseFloat(exp[i + 1]);
+                let result = 0;
+
+                if (exp[i] === "*") result = left * right;
+                if (exp[i] === "/") result = left / right;
+                if (exp[i] === "%") result = left % right;
+
+                exp.splice(i - 1, 3, result.toString());
+                i--;
+            }
+        }
+
+        for (let i = 0; i < exp.length; i++) {
+            if (exp[i] === "+" || exp[i] === "-") {
+                let left = parseFloat(exp[i - 1]);
+                let right = parseFloat(exp[i + 1]);
+                let result = 0;
+
+                if (exp[i] === "+") result = left + right;
+                if (exp[i] === "-") result = left - right;
+
+                exp.splice(i - 1, 3, result.toString());
+                i--;
+            }
+        }
+
+        let finalResult = parseFloat(exp[0]).toFixed(2);
+        display.value = finalResult;
+        expression = finalResult.toString();
+    }
+    </script>
+</body>
+</html>
