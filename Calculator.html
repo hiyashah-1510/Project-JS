@@ -7,21 +7,23 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: "Poppins", sans-serif;
         }
-        body{
+
+        body {
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(313deg,rgba(42, 123, 155, 1) 0%, rgb(37, 68, 172) 90%);
+            background: linear-gradient(313deg, rgba(42, 123, 155, 1) 0%, rgb(37, 68, 172) 90%);
         }
-        .calculator{
+
+        .calculator {
             padding: 20px;
             border: #beecfe 1.5px solid;
             background-color: rgba(255, 255, 255, 0.3);
@@ -30,70 +32,83 @@
             box-shadow: 0px 3px 40px rgba(0, 41, 57, 1);
         }
 
-        input{
-            width: 330px;
-            border: #beecfe 1.5px solid ;
+        input {
+            width: 320px;
             padding: 15px;
-            background: transparent;
+            margin: 10px;
             font-size: 40px;
             text-align: right;
-            box-shadow: 0px 2px 15px rgb(111, 214, 255);
-            margin: 10px;
+            border: #beecfe 1.5px solid;
             border-radius: 20px;
-            cursor: pointer;
+            background: transparent;
             color: #ffffff;
-        }
-        input::placeholder{
-            color: rgb(255, 255, 255);
+            cursor: pointer;
+            box-shadow: 0px 2px 15px rgb(111, 214, 255);
         }
 
-        button{
-            width: 65px;
-            height: 65px;
-            border: none;
+        input::placeholder {
+            color: #ffffff;
+        }
+
+        button {
+            width: 60px;
+            height: 60px;
             margin: 10px;
-            border-radius: 15px;
             font-size: 20px;
+            border: none;
+            border-radius: 15px;
             background-color: #beecfe;
             cursor: pointer;
         }
 
-        .equal{
-            background: #97dcf8;
+        .btn {
+            background: #79d8fe;
         }
 
-        .btn{
-            background: #79d8fe;
+        .equal {
+            background: #97dcf8;
         }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <input type="text" placeholder="0" class="form" id="display" readonly>
+        <input type="text" id="display" class="form" placeholder="0" readonly>
+
         <div>
             <button onclick="clearAll()">AC</button>
             <button onclick="deleteLast()">DEL</button>
             <button onclick="appendValue('%')">%</button>
             <button class="btn" onclick="appendValue('/')">/</button>
         </div>
+
+        <div>
+            <button onclick="calcSquare()">x²</button>
+            <button onclick="calcCube()">x³</button>
+            <button onclick="calcFactorial()">n!</button>
+            <button class="btn" onclick="checkEvenOdd()">E/O</button>
+        </div>
+
         <div>
             <button onclick="appendValue('7')">7</button>
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
-            <button class="btn" onclick="appendValue('x')">x</button>
+            <button class="btn" onclick="appendValue('*')">x</button>
         </div>
+
         <div>
             <button onclick="appendValue('4')">4</button>
             <button onclick="appendValue('5')">5</button>
             <button onclick="appendValue('6')">6</button>
             <button class="btn" onclick="appendValue('-')">-</button>
         </div>
+
         <div>
             <button onclick="appendValue('1')">1</button>
             <button onclick="appendValue('2')">2</button>
             <button onclick="appendValue('3')">3</button>
             <button class="btn" onclick="appendValue('+')">+</button>
         </div>
+
         <div>
             <button class="btn" onclick="appendValue('00')">00</button>
             <button class="btn" onclick="appendValue('0')">0</button>
@@ -103,67 +118,171 @@
     </div>
 
     <script>
-    let display = document.getElementById("display");
-    let expression = "";
+        let display = document.getElementById("display");
+        let expression = "";
 
-    function appendValue(value) {
-        expression += value;
-        display.value = expression;
-    }
+        function appendValue(value) {
+            if (expression === "" && /[+\-*/%]/.test(value)) {
+                showError("Error");
+                return;
+            }
+            expression += value;
+            display.value = expression;
+        }
 
-    function deleteLast() {
-        expression = expression.slice(0, -1);
-        display.value = expression;
-    }
+        function deleteLast() {
+            expression = expression.slice(0, -1);
+            display.value = expression;
+        }
 
-    function clearAll() {
-        expression = "";
-        display.value = "";
-    }
+        function clearAll() {
+            expression = "";
+            display.value = "";
+        }
 
-    function calculateResult() {
-        let expre = expression;
-        let num = "";
-        let result = null;   // start with null
-        let operator = "+";  // default operator
+        function showError(msg) {
+            display.value = msg;
+            setTimeout(() => {
+                display.value = "";
+                expression = "";
+            }, 2000);
+        }
 
-        for (let i = 0; i < expre.length; i++) {
-            let ch = expre[i];
+        function calculateResult() {
+            let expre = expression;
+            let num = "";
+            let result = null;
+            let operator = "+";
+            let start = 0;
 
-            if (/[0-9.]/.test(ch)) {
-                num += ch;
-            } else {
-                let n = num !== "" ? Number(num) : null;
-                if (n !== null) {
-                    if (result === null) result = n;
-                    else {
-                        if (operator === "+") result = result + n;
-                        else if (operator === "-") result = result - n;
-                        else if (operator === "*") result = result * n;
-                        else if (operator === "/") result = result / n;
-                        else if (operator === "%") result = result % n;
+            if (expre === "" || expre === null) {
+                showError("Error");
+                return;
+            }
+
+            if (expre[0] === "-") {
+                num = "-";
+                start = 1;
+            }
+
+            for (let i = start; i < expre.length; i++) {
+                let ch = expre[i];
+                if (/[0-9.]/.test(ch)) {
+                    num += ch;
+                } else {
+                    let n = num !== "" ? Number(num) : null;
+                    if (n !== null) {
+                        if (result === null) result = n;
+                        else {
+                            if (operator === "+") result = result + n;
+                            else if (operator === "-") result = result - n;
+                            else if (operator === "*") result = result * n;
+                            else if (operator === "/") {
+                                if (result === 0 || n === 0) {
+                                    showError("Error");
+                                    return;
+                                }
+                                result = result / n;
+                            }
+                            else if (operator === "%") {
+                                if (result === 0 || n === 0) {
+                                    showError("Error");
+                                    return;
+                                }
+                                result = result % n;
+                            }
+                        }
+                    }
+                    operator = ch;
+                    num = "";
+                }
+            }
+
+            if (num !== "") {
+                let n = Number(num);
+                if (result === null) result = n;
+                else {
+                    if (operator === "+") result = result + n;
+                    else if (operator === "-") result = result - n;
+                    else if (operator === "*") result = result * n;
+                    else if (operator === "/") {
+                        if (result === 0 || n === 0) {
+                            showError("Error");
+                            return;
+                        }
+                        result = result / n;
+                    }
+                    else if (operator === "%") {
+                        if (result === 0 || n === 0) {
+                            showError("Error");
+                            return;
+                        }
+                        result = result % n;
                     }
                 }
-                operator = ch;
-                num = "";
             }
+
+            display.value = result;
+            expression = result.toString();
         }
 
-        if (num !== "") {
-            let n = Number(num);
-            if (result === null) result = n;
-            else {
-                if (operator === "+") result = result + n;
-                else if (operator === "-") result = result - n;
-                else if (operator === "*") result = result * n;
-                else if (operator === "/") result = result / n;
-                else if (operator === "%") result = result % n;
+        function calcSquare() {
+            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
+                showError("Error");
+                return;
             }
+            let n = Number(display.value);
+            let res = n * n;
+            display.value = res;
+            expression = res.toString();
         }
 
-        display.value = result;
-        expression = result.toString();
-    }
+        function calcCube() {
+            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
+                showError("Error");
+                return;
+            }
+            let n = Number(display.value);
+            let res = n * n * n;
+            display.value = res;
+            expression = res.toString();
+        }
+
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            return n * factorial(n - 1);
+        }
+
+        function calcFactorial() {
+            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
+                showError("Error");
+                return;
+            }
+            let n = Number(display.value);
+            if (n < 0) {
+                showError("Error");
+                return;
+            }
+            let res = factorial(n);
+            display.value = res;
+            expression = res.toString();
+        }
+
+        function checkEvenOdd() {
+            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
+                showError("Error");
+                return;
+            }
+            let n = Number(display.value);
+            let res = (n % 2 === 0) ? "Even" : "Odd";
+
+            display.value = res;
+
+            setTimeout(() => {
+                display.value = "";
+                expression = "";
+            }, 2000);
+        }
     </script>
 </body>
 </html>
