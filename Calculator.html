@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
@@ -117,172 +118,119 @@
         </div>
     </div>
 
-    <script>
-        let display = document.getElementById("display");
-        let expression = "";
+<script>
+   let display = document.getElementById("display");
+let expression = "";
 
-        function appendValue(value) {
-            if (expression === "" && /[+\-*/%]/.test(value)) {
-                showError("Error");
-                return;
-            }
-            expression += value;
-            display.value = expression;
+function parseNumber(str) {
+    let n = Number(str);
+    return str === "" || str === null || isNaN(n) ? null : n;
+}
+
+function appendValue(value) {
+    if (expression === "" && /[+*/%]/.test(value)) {
+        showError("Error");
+        return;
+    }
+
+    if (/[+*/-]$/.test(expression) && /[+*/-]/.test(value)) {
+        showError("Error");
+        return;
+    }
+
+    if ((expression === "0" && value !== ".") || 
+        (/[\+\-\*\/]0$/.test(expression) && value !== ".")) {
+        showError("Error");
+        return;
+    }
+
+    expression += value;
+    display.value = expression;
+}
+
+function deleteLast() {
+    expression = expression.slice(0, -1);
+    display.value = expression;
+}
+
+function clearAll() {
+    expression = "";
+    display.value = "";
+}
+
+function showError(msg) {
+    display.value = msg;
+    setTimeout(() => {
+        display.value = "";
+        expression = "";
+    }, 2000);
+}
+
+function displayResult(result) {
+    display.value = result;
+    expression = result.toString();
+}
+
+function calcSquare() {
+    let num = parseNumber(expression);
+    if(num === null) return showError("Error");
+    displayResult(num * num);
+}
+
+function calcCube() {
+    let num = parseNumber(expression);
+    if(num === null) return showError("Error");
+    displayResult(num * num * num);
+}
+
+function calcFactorial() {
+    let num = parseNumber(expression);
+    if(num === null || num < 0) return showError("Error");
+    let fact = 1;
+    for(let i=1; i<=num; i++) fact *= i;
+    displayResult(fact);
+}
+
+function checkEvenOdd() {
+    let num = parseNumber(expression);
+    if(num === null) return showError("Error");
+    displayResult(num % 2 === 0 ? "Even" : "Odd");
+}
+
+// Calculation function without eval()
+function calculateResult() {
+    if(expression === "") return showError("Error");
+
+    let numbers = expression.split(/[\+\-\*\/]/).map(n => parseNumber(n));
+    let operators = expression.replace(/[0-9.]/g,'').split('');
+
+    if(numbers.includes(null)) return showError("Error");
+
+    for(let i = 0; i < operators.length; i++) {
+        if(operators[i] === "*") {
+            numbers[i] = numbers[i] * numbers[i+1];
+            numbers.splice(i+1, 1);
+            operators.splice(i,1);
+            i--;
+        } else if(operators[i] === "/") {
+            if(numbers[i+1] === 0) return showError("Error");
+            numbers[i] = numbers[i] / numbers[i+1];
+            numbers.splice(i+1, 1);
+            operators.splice(i,1);
+            i--;
         }
+    }
+    
+    let result = numbers[0];
+    for(let i=0; i<operators.length; i++){
+        if(operators[i] === "+") result += numbers[i+1];
+        else if(operators[i] === "-") result -= numbers[i+1];
+    }
 
-        function deleteLast() {
-            expression = expression.slice(0, -1);
-            display.value = expression;
-        }
+    displayResult(result);
+}
 
-        function clearAll() {
-            expression = "";
-            display.value = "";
-        }
+</script>
 
-        function showError(msg) {
-            display.value = msg;
-            setTimeout(() => {
-                display.value = "";
-                expression = "";
-            }, 2000);
-        }
-
-        function calculateResult() {
-            let expre = expression;
-            let num = "";
-            let result = null;
-            let operator = "+";
-            let start = 0;
-
-            if (expre === "" || expre === null) {
-                showError("Error");
-                return;
-            }
-
-            if (expre[0] === "-") {
-                num = "-";
-                start = 1;
-            }
-
-            for (let i = start; i < expre.length; i++) {
-                let ch = expre[i];
-                if (/[0-9.]/.test(ch)) {
-                    num += ch;
-                } else {
-                    let n = num !== "" ? Number(num) : null;
-                    if (n !== null) {
-                        if (result === null) result = n;
-                        else {
-                            if (operator === "+") result = result + n;
-                            else if (operator === "-") result = result - n;
-                            else if (operator === "*") result = result * n;
-                            else if (operator === "/") {
-                                if (result === 0 || n === 0) {
-                                    showError("Error");
-                                    return;
-                                }
-                                result = result / n;
-                            }
-                            else if (operator === "%") {
-                                if (result === 0 || n === 0) {
-                                    showError("Error");
-                                    return;
-                                }
-                                result = result % n;
-                            }
-                        }
-                    }
-                    operator = ch;
-                    num = "";
-                }
-            }
-
-            if (num !== "") {
-                let n = Number(num);
-                if (result === null) result = n;
-                else {
-                    if (operator === "+") result = result + n;
-                    else if (operator === "-") result = result - n;
-                    else if (operator === "*") result = result * n;
-                    else if (operator === "/") {
-                        if (result === 0 || n === 0) {
-                            showError("Error");
-                            return;
-                        }
-                        result = result / n;
-                    }
-                    else if (operator === "%") {
-                        if (result === 0 || n === 0) {
-                            showError("Error");
-                            return;
-                        }
-                        result = result % n;
-                    }
-                }
-            }
-
-            display.value = result;
-            expression = result.toString();
-        }
-
-        function calcSquare() {
-            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
-                showError("Error");
-                return;
-            }
-            let n = Number(display.value);
-            let res = n * n;
-            display.value = res;
-            expression = res.toString();
-        }
-
-        function calcCube() {
-            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
-                showError("Error");
-                return;
-            }
-            let n = Number(display.value);
-            let res = n * n * n;
-            display.value = res;
-            expression = res.toString();
-        }
-
-        function factorial(n) {
-            if (n === 0 || n === 1) return 1;
-            return n * factorial(n - 1);
-        }
-
-        function calcFactorial() {
-            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
-                showError("Error");
-                return;
-            }
-            let n = Number(display.value);
-            if (n < 0) {
-                showError("Error");
-                return;
-            }
-            let res = factorial(n);
-            display.value = res;
-            expression = res.toString();
-        }
-
-        function checkEvenOdd() {
-            if (expression === "" || expression === null || /[+\-*/%]/.test(expression)) {
-                showError("Error");
-                return;
-            }
-            let n = Number(display.value);
-            let res = (n % 2 === 0) ? "Even" : "Odd";
-
-            display.value = res;
-
-            setTimeout(() => {
-                display.value = "";
-                expression = "";
-            }, 2000);
-        }
-    </script>
 </body>
 </html>
