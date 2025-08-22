@@ -1,7 +1,29 @@
 # Project-JS
 # Smart Calculator
-This project is a simple calculator built using HTML, CSS, and JavaScript. The design uses a modern glass-effect style with gradient background, rounded buttons, and a responsive layout. The calculator supports basic arithmetic operations like addition, subtraction, multiplication, division, and modulus, along with extra features such as AC (clear all), DEL (delete last), decimal input, and double zero (00). The JavaScript code handles user input by storing two numbers (num1, num2) and the selected operator, updating the display in real time. When the = button is pressed, the calculator evaluates the expression, shows the result rounded to two decimals, and resets for the next calculation.
+📌 Description
+
+    This project is a modern scientific calculator built with HTML, CSS, and JavaScript. It not only performs basic arithmetic operations 
+    but also supports advanced functions like square, cube, factorial, and even/odd checking. The design uses a glassmorphism UI with 
+    gradients, blur effects, and styled buttons for a professional look. JavaScript handles all the logic, including error detection such 
+    as invalid inputs or division by zero, ensuring smooth performance.
+
+🔑 Key Features
+
+    ✨ User Interface: Clean and modern glass-style design with gradient background.
+    
+    🔢 Basic Operations: Addition, subtraction, multiplication, division, and modulus.
+    
+    📐 Advanced Functions: Square (x²), Cube (x³), Factorial (n!), and Even/Odd check.
+    
+    🛠️ Error Handling: Prevents invalid inputs and handles division by zero gracefully.
+    
+    ⏱️ Interactive Display: Shows real-time inputs, with clear and delete options.
+    
+    💡 Responsive & Simple: Easy-to-use layout with properly spaced buttons.
 # Output
-<img width="658" height="938" alt="image" src="https://github.com/user-attachments/assets/999541c7-4818-4e61-902d-2148b2e806d1" />
-<img width="674" height="1045" alt="image" src="https://github.com/user-attachments/assets/2782afd3-42ce-44ff-9777-8051fddc97a6" />
+<img width="614" height="977" alt="image" src="https://github.com/user-attachments/assets/9c847a80-3d8e-4920-bbae-2a860c35af4d" />
+<img width="620" height="998" alt="image" src="https://github.com/user-attachments/assets/40290f5d-aefd-4185-a294-6dc33166db4f" />
+<img width="607" height="985" alt="image" src="https://github.com/user-attachments/assets/7ef8f9ab-d587-45a0-8d7c-bd8371e640cc" />
+
+
 
