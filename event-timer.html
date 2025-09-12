@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Countdown & Quotes App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00ffd1;
+            margin: 20px 0;
+        }
+
+        #quote {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #ffe066;
+            min-height: 80px;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+            margin-bottom: 25px;
+        }
+
+        input, button {
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        input {
+            width: 60%;
+            margin-right: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        input:invalid {
+            border: 2px solid #48ff7f;
+        }
+
+        button {
+            background-color: #00ffd1;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00e6b8;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 500px) {
+            input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .btn-group button {
+                width: 45%;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>⏳ Countdown & Quotes App</h1>
+
+    <div class="container">
+
+        <input type="datetime-local" id="userDate" required />
+        <div class="btn-group">
+            <button onclick="setCountdown()">Start Countdown</button>
+            <button onclick="updateCountdown()">Update Countdown</button>
+        </div>
+
+        <div id="countdown">Waiting for target date...</div>
+
+        <div id="quote">✨ Stay inspired with beautiful quotes...</div>
+
+    </div>
+
+    <script>
+        let countdownInterval;
+        let currentTargetTime = null;
+
+        function setCountdown() {
+            let inputElem = document.getElementById("userDate");
+            let userDate = new Date(inputElem.value).getTime();
+
+            if (isNaN(userDate) || userDate <= new Date().getTime()) {
+                alert("❌ Select a valid future date and time!");
+                inputElem.focus();
+                return;
+            }
+
+            currentTargetTime = userDate;
+            startCountdown();
+        }
+
+        function updateCountdown() {
+            if (!currentTargetTime) {
+                alert("⚠️ Set a countdown first to update!");
+                return;
+            }
+
+            let inputElem = document.getElementById("userDate");
+            let newUserDate = new Date(inputElem.value).getTime();
+
+            if (isNaN(newUserDate) || newUserDate <= new Date().getTime()) {
+                alert("❌ Select a valid future date and time!");
+                inputElem.focus();
+                return;
+            }
+
+            currentTargetTime = newUserDate;
+            startCountdown();
+        }
+
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(() => {
+                let now = new Date().getTime();
+                let distance = currentTargetTime - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").innerHTML = "🎉 Time's up! The event has started.";
+                    return;
+                }
+
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        let quotes = [
+            "Success is not final; failure is not fatal: it is the courage to continue that counts.",
+            "The best way to predict the future is to create it.",
+            "Believe you can and you're halfway there.",
+            "The only limit to our realization of tomorrow is our doubts of today.",
+            "You are never too old to set another goal or to dream a new dream."
+        ];
+        let quoteIndex = 0;
+
+        setInterval(() => {
+            const quoteElem = document.getElementById("quote");
+            quoteElem.style.opacity = 0;
+            setTimeout(() => {
+                quoteElem.innerHTML = `“${quotes[quoteIndex]}”`;
+                quoteElem.style.opacity = 1;
+                quoteIndex = (quoteIndex + 1) % quotes.length;
+            }, 500);
+        }, 4000);
+
+    </script>
+
+</body>
+
+</html>
