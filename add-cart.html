@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product - E-Shop</title>
+  <link rel="stylesheet" href="./assets/CSS/bootstrap.min.css">
+  <link rel="stylesheet" href="./assets/CSS/bootstrap-icons.min.css">
+</head>
+<body class="container border-bottom border-body" data-bs-theme="dark">
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">E-Shop</a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="./index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Categories</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Deals</a>
+              </li>
+            </ul>
+          </div>
+
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="bi bi-cart me-1"></i>Cart</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="bi bi-person me-1"></i>Account</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="d-flex justify-content-center align-items-center my-5">
+    <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+      <h4 class="mb-3 text-center">Add Product</h4>
+      <form>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="id" class="form-label">Product ID</label>
+            <input type="text" class="form-control" id="id" placeholder="Enter product ID">
+          </div>
+          <div class="col-md-6">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter product name">
+          </div>
+          <div class="col-md-6">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" placeholder="Enter price">
+          </div>
+
+          <div class="col-md-6">
+            <label for="discountPrice" class="form-label">Discount Price</label>
+            <input type="number" class="form-control" id="discountPrice" placeholder="Enter discount price">
+          </div>
+          <div class="col-md-6">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" placeholder="Enter stock quantity">
+          </div>
+
+          <div class="col-md-6">
+            <label for="saleEndTime" class="form-label">Sale End Time</label>
+            <input type="datetime-local" class="form-control" id="saleEndTime">
+          </div>
+          <div class="col-md-6">
+            <label for="image" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="image">
+          </div>
+
+          <div class="col-md-6">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category">
+              <option selected disabled>Select category</option>
+              <option value="electronics">Electronics</option>
+              <option value="clothing">Clothing</option>
+              <option value="home">Home & Kitchen</option>
+              <option value="books">Books</option>
+              <option value="toys">Toys</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Enter product description"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Add Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="./assets/JS/bootstrap.bundle.min.js"></script>
+</body>
+</html>
