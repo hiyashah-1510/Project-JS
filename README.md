@@ -5,6 +5,7 @@ This page is a simple E-commerce website with a dark-themed navbar (Home, Produc
 
 # Output
 
-<img width="1813" height="884" alt="image" src="https://github.com/user-attachments/assets/8f03cdda-a6af-4e8f-99b9-4f34a0db3ae3" />
-<img width="1833" height="1049" alt="image" src="https://github.com/user-attachments/assets/a6a582eb-6095-49d4-9ee0-b7c6152bc9d6" />
+<img width="1967" height="978" alt="image" src="https://github.com/user-attachments/assets/5ac95291-7aa4-4525-87a9-77a79cb8f4f8" />
+<img width="1913" height="1196" alt="image" src="https://github.com/user-attachments/assets/20e8917f-f549-4957-b162-d031a07681d0" />
+
 
