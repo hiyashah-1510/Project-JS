@@ -1,184 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Countdown & Quotes App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        h1 {
-            font-weight: 600;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            animation: fadeIn 1s ease;
-        }
-        #countdown {
-            font-size: 3em;
-            font-weight: bold;
-            color: #00ffd1;
-            margin: 20px 0;
-        }
-        #quote {
-            font-size: 1.2em;
-            font-style: italic;
-            color: #ffe066;
-            min-height: 80px;
-            opacity: 1;
-            transition: opacity 1s ease-in-out;
-            margin-bottom: 25px;
-        }
-        button {
-            padding: 12px;
-            font-size: 1em;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            background-color: #00ffd1;
-            color: #1a1a1a;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        button:hover {
-            background-color: #00e6b8;
-        }
-        .btn-group {
-            margin-top: 20px;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 500px) {
-            .btn-group button {
-                width: 45%;
-                margin: 5px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Countdown & Quotes App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+    #countdown {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ffd1;
+      margin: 20px 0;
+    }
+    #quote {
+      font-size: 1.2em;
+      font-style: italic;
+      color: #ffe066;
+      min-height: 80px;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+      margin-bottom: 25px;
+    }
+    button {
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background-color: #00ffd1;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    .btn-group {
+      margin-top: 20px;
+    }
+    .progress-container {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      height: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 12px;
+      width: 0%;
+      background: #00ffd1;
+      transition: width 1s linear;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <h1>⏳ New Year's Countdown & Quotes App</h1>
-    <div class="container">
-        <div class="btn-group">
-            <button onclick="setCountdown()">Start Countdown</button>
-            <button onclick="pauseCountdown()">Pause Countdown</button>
-        </div>
-        <div id="countdown">Waiting for New Year's 2026...</div>
-        <div id="quote">✨ Stay inspired with beautiful quotes...</div>
+  <h1>⏳ New Year's Countdown & Quotes App</h1>
+  <div class="container">
+    <div class="progress-container">
+      <div class="progress-bar" id="progress"></div>
     </div>
-    <script>
-        let countdownInterval;
-        let currentTargetTime = null;
-        let isPaused = false;
-        let remainingTime = 0;
+    <div class="btn-group">
+      <button onclick="setCountdown()">Start</button>
+      <button onclick="pauseCountdown()">Pause</button>
+      <button onclick="resetCountdown()">Reset</button>
+    </div>
+    <div id="countdown">Waiting for New Year's 2026...</div>
+    <div id="quote">✨ Stay inspired with beautiful quotes...</div>
+  </div>
 
-        // Display welcome modal when the page loads
-        window.onload = function() {
-            alert("🎉 Welcome to the New Year's Countdown & Quotes App! Click 'Start Countdown' to begin counting down to New Year's 2026!");
-        };
+  <script>
+    let countdownInterval;
+    let currentTargetTime = null;
+    let isPaused = false;
+    let remainingTime = 0;
+    const progressBar = document.getElementById("progress");
+    const targetDate = new Date("2026-01-01T00:00:00").getTime();
 
-        function setCountdown() {
-            if (isPaused) {
-                // Resume from paused state
-                currentTargetTime = new Date().getTime() + remainingTime;
-                isPaused = false;
-            } else {
-                // Set target date to January 1, 2026, 00:00:00
-                currentTargetTime = new Date("2026-01-01T00:00:00").getTime();
-            }
+    function setCountdown() {
+      if (isPaused) {
+        currentTargetTime = new Date().getTime() + remainingTime;
+        isPaused = false;
+      } else {
+        currentTargetTime = targetDate;
+      }
+      startCountdown();
+    }
 
-            if (isNaN(currentTargetTime) || currentTargetTime <= new Date().getTime()) {
-                alert("❌ Invalid target date!");
-                return;
-            }
+    function pauseCountdown() {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+        remainingTime = currentTargetTime - new Date().getTime();
+        isPaused = true;
+        document.getElementById("countdown").innerHTML = formatTime(remainingTime);
+      }
+    }
 
-            startCountdown();
+    function resetCountdown() {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      isPaused = false;
+      remainingTime = 0;
+      document.getElementById("countdown").innerHTML = "Waiting for New Year's 2026...";
+      progressBar.style.width = "0%";
+    }
+
+    function startCountdown() {
+      if (countdownInterval) clearInterval(countdownInterval);
+      const totalTime = currentTargetTime - new Date().getTime();
+
+      countdownInterval = setInterval(() => {
+        let now = new Date().getTime();
+        let distance = currentTargetTime - now;
+
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").innerHTML = "🎉 Happy New Year 2026!";
+          progressBar.style.width = "100%";
+          return;
         }
+        document.getElementById("countdown").innerHTML = formatTime(distance);
+        let progress = 100 - (distance / totalTime) * 100;
+        progressBar.style.width = progress + "%";
+      }, 1000);
+    }
 
-        function pauseCountdown() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-                remainingTime = currentTargetTime - new Date().getTime();
-                isPaused = true;
-                document.getElementById("countdown").innerHTML = formatTime(remainingTime);
-                alert("⏸ Countdown paused!");
-            }
-        }
+    function formatTime(distance) {
+      let days = parseInt(distance / (1000 * 60 * 60 * 24));
+      distance -= days * (1000 * 60 * 60 * 24);
 
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
+      let hours = parseInt(distance / (1000 * 60 * 60));
+      distance -= hours * (1000 * 60 * 60);
 
-            countdownInterval = setInterval(() => {
-                let now = new Date().getTime();
-                let distance = currentTargetTime - now;
+      let minutes = parseInt(distance / (1000 * 60));
+      distance -= minutes * (1000 * 60);
 
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById("countdown").innerHTML = "🎉 Happy New Year 2026!";
-                    countdownInterval = null;
-                    isPaused = false;
-                    return;
-                }
+      let seconds = parseInt(distance / 1000);
 
-                document.getElementById("countdown").innerHTML = formatTime(distance);
-            }, 1000);
-        }
+      return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+    }
 
-        function formatTime(distance) {
-            let days = parseInt(distance / (1000 * 60 * 60 * 24));
-            distance -= days * (1000 * 60 * 60 * 24);
-
-            let hours = parseInt(distance / (1000 * 60 * 60));
-            distance -= hours * (1000 * 60 * 60);
-
-            let minutes = parseInt(distance / (1000 * 60));
-            distance -= minutes * (1000 * 60);
-
-            let seconds = parseInt(distance / 1000);
-
-            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-
-        let quotes = [
-            "Success is not final; failure is not fatal: it is the courage to continue that counts.",
-            "The best way to predict the future is to create it.",
-            "Believe you can and you're halfway there.",
-            "The only limit to our realization of tomorrow is our doubts of today.",
-            "You are never too old to set another goal or to dream a new dream."
-        ];
-        let quoteIndex = 0;
-
-        setInterval(() => {
-            const quoteElem = document.getElementById("quote");
-            quoteElem.style.opacity = 0;
-            setTimeout(() => {
-                quoteElem.innerHTML = `“${quotes[quoteIndex]}”`;
-                quoteElem.style.opacity = 1;
-                quoteIndex = (quoteIndex + 1) % quotes.length;
-            }, 500);
-        }, 4000);
-    </script>
+    let quotes = [
+      "Success is not final; failure is not fatal: it is the courage to continue that counts.",
+      "The best way to predict the future is to create it.",
+      "Believe you can and you're halfway there.",
+      "The only limit to our realization of tomorrow is our doubts of today.",
+      "You are never too old to set another goal or to dream a new dream."
+    ];
+    let quoteIndex = 0;
+    setInterval(() => {
+      const quoteElem = document.getElementById("quote");
+      quoteElem.style.opacity = 0;
+      setTimeout(() => {
+        quoteElem.innerHTML = "“" + quotes[quoteIndex] + "”";
+        quoteElem.style.opacity = 1;
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+      }, 500);
+    }, 4000);
+  </script>
 </body>
 </html>
