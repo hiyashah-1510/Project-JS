@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ---------------- Default Products ----------------
     const defaultProducts = [
         { 
             id: 1, 
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // ---------------- DOM Elements ----------------
     const productCards = document.getElementById("productCards");
     const productForm = document.getElementById("productForm");
     const cartTableBody = document.querySelector("#cartTable tbody");
@@ -56,12 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const productDetailsDiv = document.getElementById("productDetails");
     const productTableBody = document.querySelector("#productTable tbody");
 
-    // ---------------- State ----------------
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let customProducts = JSON.parse(localStorage.getItem("customProducts")) || [];
     let editIndex = null;
 
-    // ---------------- Cart Functions ----------------
     function saveCart() {
         localStorage.setItem("cart", JSON.stringify(cart));
     }
@@ -134,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCart();
     };
 
-    // ---------------- Manage Products Table ----------------
     function saveCustomProducts() {
         localStorage.setItem("customProducts", JSON.stringify(customProducts));
     }
@@ -169,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         });
 
-        // ✅ Append total row at bottom
         productTableBody.innerHTML += `
             <tr class="table-dark">
                 <td colspan="5" class="text-end fw-bold">Total Value</td>
@@ -203,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
         displayProducts();
     };
 
-    // ---------------- Handle Form Submission ----------------
     if (productForm) {
         productForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -230,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 editIndex = null;
             } else {
                 customProducts.push(newProduct);
-                addToCart(id, true); // auto add to cart
+                addToCart(id, true);
             }
 
             renderProductTable();
@@ -239,7 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ---------------- Home Page Product Cards ----------------
     function displayProducts() {
         if (!productCards) return;
         productCards.innerHTML = "";
@@ -271,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ---------------- Product Details ----------------
     window.viewProduct = function (id, isCustom = false) {
         const source = isCustom ? customProducts : defaultProducts;
         const product = source.find(p => p.id === id);
@@ -309,7 +300,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ---------------- Init ----------------
     displayProducts();
     renderCart();
     renderProductTable();
@@ -322,4 +312,5 @@ document.addEventListener("DOMContentLoaded", () => {
             renderCart();
         });
     }
+
 });
