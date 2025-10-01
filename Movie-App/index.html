@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Movie by API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f6f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #0078ff;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fcc;
+    }
+    #movieDetail {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    }
+    #movieDetail img {
+      display: block;
+      margin: 10px auto;
+      border-radius: 8px;
+    }
+    p {
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Search Movie</h1>
+
+  <div class="search-box">
+    <input type="text" id="movieName" placeholder="Enter Movie Title or IMDb ID...">
+    <button id="searchMovieBtn">Search</button>
+  </div>
+
+  <div id="movieDetail"></div>
+
+  <script>
+    const apiKey = "2637a737"; // 👉 Replace with your OMDb API key
+
+    // Button click
+    document.getElementById("searchMovieBtn").addEventListener("click", () => {
+      const mName = document.getElementById("movieName").value.trim();
+      if (!mName) {
+        alert("Enter Movie Title or IMDb ID...");
+        return;
+      }
+      searchMovie(mName);
+    });
+
+    // Enter key
+    document.getElementById("movieName").addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        const mName = e.target.value.trim();
+        if (!mName) {
+          alert("Enter Movie Title or IMDb ID...");
+          return;
+        }
+        searchMovie(mName);
+      }
+    });
+
+    // Fetch movie
+    async function searchMovie(query) {
+      try {
+        // Check if input looks like IMDb ID (starts with "tt" + digits)
+        let url = "";
+        if (/^tt\d+$/.test(query)) {
+          url = `https://www.omdbapi.com/?i=${query}&apikey=${apiKey}`;
+        } else {
+          url = `https://www.omdbapi.com/?t=${query}&apikey=${apiKey}`;
+        }
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          document.getElementById("movieDetail").innerHTML = `<p>❌ Movie not found!</p>`;
+          return;
+        }
+
+        document.getElementById("movieDetail").innerHTML = `
+          <h2>${data.Title} (${data.Year})</h2>
+          <img src="${data.Poster}" alt="Poster" width="200">
+          <p><strong>Genre:</strong> ${data.Genre}</p>
+          <p><strong>Director:</strong> ${data.Director}</p>
+          <p><strong>Actors:</strong> ${data.Actors}</p>
+          <p><strong>Plot:</strong> ${data.Plot}</p>
+          <p><strong>IMDb Rating:</strong> ⭐ ${data.imdbRating}</p>
+        `;
+      } catch (err) {
+        console.error(`Error is : ${err}`);
+        document.getElementById("movieDetail").innerHTML = "⚠️ Error fetching movie details.";
+      }
+    }
+  </script>
+</body>
+</html>
