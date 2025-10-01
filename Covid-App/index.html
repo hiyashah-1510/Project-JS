@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Country Tracker</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+
+    <h1>COVID-19 Country Tracker</h1>
+
+    <div class="search-box">
+      <input type="text" id="countryInput" placeholder="Enter country">
+      <button onclick="getCovidData()">Search</button>
+    </div>
+
+    <div class="card" id="covidCard">
+      <h2>Search for a country...</h2>
+    </div>
+
+    <script>
+      async function getCovidData() {
+        const country = document.getElementById("countryInput").value.trim();
+        const url = `https://disease.sh/v3/covid-19/countries/${country}`;
+
+        if (!country) {
+          document.getElementById("covidCard").innerHTML = `<p class="error">⚠️ Please enter a country name</p>`;
+          return;
+        }
+
+        try {
+          const res = await fetch(url);
+          if (!res) throw new Error("Country not found");
+          const data = await res.json();
+
+          document.getElementById("covidCard").innerHTML = `
+            <h2>${data.country} 
+              <img class="country-flag" src="${data.countryInfo.flag}" alt="Flag">
+            </h2>
+            <div class="stats">
+              <p><strong>Cases:</strong> ${data.cases.toLocaleString()}</p>
+              <p><strong>Today's Cases:</strong> ${data.todayCases.toLocaleString()}</p>
+              <p><strong class="highlight">Deaths:</strong> ${data.deaths.toLocaleString()}</p>
+              <p><strong>Recovered:</strong> ${data.recovered.toLocaleString()}</p>
+              <p><strong>Active:</strong> ${data.active.toLocaleString()}</p>
+              <p><strong>Critical:</strong> ${data.critical.toLocaleString()}</p>
+            </div>
+          `;
+        } catch (error) {
+          document.getElementById("covidCard").innerHTML = `<p class="error">⚠️ Country not found. Try again!</p>`;
+        }
+      }
+
+      document.getElementById("countryInput").addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          getCovidData();
+        }
+      });
+    </script>
+
+  </body>
+</html>
