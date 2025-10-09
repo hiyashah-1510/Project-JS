@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Result System — SPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <div class="app-root" id="appRoot">
+        <aside class="sidebar card" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo small">SRS</div>
+                <div>
+                    <div class="header">Student Result System</div>
+                    <div id="sidebarUser" class="muted small"></div>
+                </div>
+            </div>
+            <nav class="menu">
+                <button class="menu-item active" data-section="dashboard">Dashboard</button>
+                <button class="menu-item" data-section="addResult">Add Result</button>
+                <div class="spacer"></div>
+                <div class="user-block">
+                    <div id="signedInAs" class="muted small"></div>
+                    <button id="logoutBtn" class="btn ghost">Logout</button>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-area">
+            <section id="authCard" class="auth-card card">
+                <div class="brand">
+                    <div class="logo">SRS</div>
+                    <div>
+                        <h1>Student Result System</h1>
+                        <p class="muted">Login or create an account to manage student results</p>
+                    </div>
+                </div>
+                <div id="loginView" class="auth-view">
+                    <h3>Login</h3>
+                    <form id="loginForm" class="form">
+                        <label>Email</label>
+                        <input id="loginEmail" type="email" placeholder="you@example.com" required />
+                        <label>Password</label>
+                        <input id="loginPassword" type="password" placeholder="Your password" required />
+                        <div class="row">
+                            <button type="submit" class="btn primary">Login</button>
+                            <button type="button" id="showSignupBtn" class="btn ghost">Sign up</button>
+                        </div>
+                        <p id="loginMsg" class="msg"></p>
+                    </form>
+                </div>
+                <div id="signupView" class="auth-view" style="display:none;">
+                    <h3>Create account</h3>
+                    <form id="signupForm" class="form">
+                        <label>Full name</label>
+                        <input id="signupName" type="text" placeholder="Your full name" required />
+                        <label>Email</label>
+                        <input id="signupEmail" type="email" placeholder="you@example.com" required />
+                        <label>Password</label>
+                        <input id="signupPassword" type="password" placeholder="min 6 chars" minlength="6" required />
+                        <label>Confirm password</label>
+                        <input id="signupPassword2" type="password" placeholder="confirm password" minlength="6"
+                            required />
+                        <div class="row">
+                            <button type="submit" class="btn primary">Create</button>
+                            <button type="button" id="showLoginBtn" class="btn ghost">Back</button>
+                        </div>
+                        <p id="signupMsg" class="msg"></p>
+                    </form>
+                </div>
+            </section>
+
+            <section id="appShell" class="app-shell" style="display:none;">
+                <div class="top card">
+                    <div class="top-left">
+                        <h2 id="pageTitle">Dashboard</h2>
+                        <p id="welcome" class="muted small">Manage student results</p>
+                    </div>
+                </div>
+                <div id="addSection" class="card section-hidden">
+                    <h3>Add Result</h3>
+                    <form id="addForm" class="form-grid">
+                        <input id="student" placeholder="Student name" required />
+                        <input id="subject" placeholder="Subject" required />
+                        <input id="marks" type="number" placeholder="Marks (0-100)" min="0" max="100" required />
+                        <input id="date" type="date" />
+                        <div class="row" style="grid-column:1/-1;">
+                            <button type="submit" class="btn primary">Add</button>
+                            <button type="button" id="clearAdd" class="btn ghost">Clear</button>
+                        </div>
+                        <p id="addMsg" class="msg"></p>
+                    </form>
+                </div>
+                <div id="listSection" class="card">
+                    <h3>Your Results</h3>
+                    <div id="resultsList" class="results-list"></div>
+                    <p id="noResults" class="muted small"></p>
+                </div>
+            </section>
+        </main>
+
+        <div id="editModal">
+            <div class="card-content">
+                <h3>Edit Result</h3>
+                <form id="editForm" style="display:flex;flex-direction:column;gap:8px;">
+                    <input id="editStudent" placeholder="Student name" required />
+                    <input id="editSubject" placeholder="Subject" required />
+                    <input id="editMarks" type="number" placeholder="Marks (0-100)" min="0" max="100" required />
+                    <input id="editDate" type="date" />
+                    <div class="row">
+                        <button type="submit" class="btn primary">Save</button>
+                        <button type="button" id="closeEditModal" class="btn ghost">Cancel</button>
+                    </div>
+                    <p id="editMsg" class="msg"></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
